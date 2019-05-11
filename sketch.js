@@ -10,7 +10,8 @@ function preload() {
 
 function setup() {
 	// console.log(img.width, img.height);
-	createCanvas(img.width, img.height);
+	// createCanvas(img.width, img.height);
+	createCanvas(img.width / 4 * 3, img.height / 4 * 3);
 	pixelDensity(1);
 
 	background(0);
@@ -19,7 +20,7 @@ function setup() {
 	// filteredImg = createGraphics(width, height);
 
 
-	image(img, 0, 0, width, height);
+	// image(img, 0, 0, width, height);
 
 	img.resize(width, height);
 
@@ -91,38 +92,38 @@ function drawImg() {
 			// pixels[index + 2] = img.pixels[index + 2] * 1.3;
 
 			// Transparant whitespace img:
-			let cols = img.pixels.slice(index, index + 3);
-			let avg = (cols[0] + cols[1] + cols[2]) / 3;
-			if (avg < 200) { // if it isnt white
-				// if (avg === 255) { // if it isnt white
-				pixels[index + 0] = img.pixels[index + 0];
-				pixels[index + 1] = img.pixels[index + 1];
-				pixels[index + 2] = img.pixels[index + 2];
-				pixels[index + 3] = 255;
-			} else {
-				pixels[index + 3] = 0; // transparent
-			}
+			// let cols = img.pixels.slice(index, index + 3);
+			// let avg = (cols[0] + cols[1] + cols[2]) / 3;
+			// if (avg < 200) { // if it isnt white
+			// 	// if (avg === 255) { // if it isnt white
+			// 	pixels[index + 0] = img.pixels[index + 0];
+			// 	pixels[index + 1] = img.pixels[index + 1];
+			// 	pixels[index + 2] = img.pixels[index + 2];
+			// 	pixels[index + 3] = 255;
+			// } else {
+			// 	pixels[index + 3] = 0; // transparent
+			// }
 
 			// Magenta blackness img:
-			let avg = (cols[0] + (255 - cols[1]) + cols[2]) / 3;
-			if (avg < 200) { // if it isnt white
-				// if (avg === 255) { // if it isnt white
-				pixels[index + 0] = img.pixels[index + 0];
-				pixels[index + 1] = img.pixels[index + 1];
-				pixels[index + 2] = img.pixels[index + 2];
-				pixels[index + 3] = 255;
-			} else {
-				pixels[index + 1] = 255 - img.pixels[index + 1]; // magenta
-			}
+			// let avg = (cols[0] + (255 - cols[1]) + cols[2]) / 3;
+			// if (avg < 200) { // if it isnt white
+			// 	// if (avg === 255) { // if it isnt white
+			// 	pixels[index + 0] = img.pixels[index + 0];
+			// 	pixels[index + 1] = img.pixels[index + 1];
+			// 	pixels[index + 2] = img.pixels[index + 2];
+			// 	pixels[index + 3] = 255;
+			// } else {
+			// 	pixels[index + 1] = 255 - img.pixels[index + 1]; // magenta
+			// }
 
 			// Transparant corresponding to brightness img:
 			// AKA: Disco
-			// let cols = img.pixels.slice(index, index + 3);
-			// let avg = (cols[0] + cols[1] + cols[2]) / 3;
-			// pixels[index + 0] = img.pixels[index + 0];
-			// pixels[index + 1] = img.pixels[index + 1];
-			// pixels[index + 2] = img.pixels[index + 2];
-			// pixels[index + 3] = map(brightness(avg), 100, 0, 0, 255);
+			let cols = img.pixels.slice(index, index + 3);
+			let avg = (cols[0] + cols[1] + cols[2]) / 3;
+			pixels[index + 0] = img.pixels[index + 0];
+			pixels[index + 1] = img.pixels[index + 1];
+			pixels[index + 2] = img.pixels[index + 2];
+			pixels[index + 3] = map(brightness(avg), 100, 0, 0, 255);
 			// 255 is vis
 
 			// Averaging all pixels:
@@ -150,7 +151,6 @@ function drawImg() {
 	// g /= i;
 	// b /= i;
 	// background(r, g, b);
-
 
 
 }
