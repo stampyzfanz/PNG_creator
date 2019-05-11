@@ -4,28 +4,35 @@ let img;
 // let filteredImg;
 // let lines = [];
 
+let wordToFunction = {
+	"normal image": "normalImg",
+	"image with some of the colors": "someColorsImg",
+	"image with inverted colors": "inverseColorsImg",
+	"image with inverted colors that's darker": "darkInverseColorsImg",
+	"greyscale image": "greyscaleColorsImg",
+	"some greyscale image with green normal": "yellowGreyscaleColorsImg",
+	"some greyscale image with some colors normal": "greyscaleSomeColorsImg",
+	"image with increased brightness (saturation?)": "brighterImg",
+	"image with white being transparent": "transparentWhitespaceImg",
+	"image where the brightness of each part of the image \
+	determines its transparency": "mapWhitenessToTransparencyImg",
+	"": "averagePixels",
+};
+
 function preload() {
 	img = loadImage('kitten.jpg');
 }
 
 function setup() {
-	// console.log(img.width, img.height);
-	// createCanvas(img.width, img.height);
-	createCanvas(img.width / 4 * 3, img.height / 4 * 3);
+	let canvasSize = .66;
+	createCanvas(img.width * canvasSize, img.height * canvasSize);
 	pixelDensity(1);
 
 	background(0);
-	// clear();
-
-	// filteredImg = createGraphics(width, height);
-
-
-	// image(img, 0, 0, width, height);
 
 	img.resize(width, height);
 
-	drawImg();
-
+	drawImg('normal');
 }
 
 function drawImg() {
@@ -45,64 +52,101 @@ function drawImg() {
 		for (let y = 0; y < height; y++) {
 			let index = (x + y * width) * 4;
 
-			// Normal img:
-			// pixels[index + 0] = img.pixels[index + 0];
-			// pixels[index + 1] = img.pixels[index + 1];
-			// pixels[index + 2] = img.pixels[index + 2];
+			// can be useful for greyscale and things
+			let cols = img.pixels.slice(index, index + 3);
+			let avg = (cols[0] + cols[1] + cols[2]) / 3;
 
-			// Red img:
-			// pixels[index + 0] = img.pixels[index + 0];
+			// Normal img:
+			function normalImg() {
+				pixels[index + 0] = img.pixels[index + 0];
+				pixels[index + 1] = img.pixels[index + 1];
+				pixels[index + 2] = img.pixels[index + 2];
+			}
 
 			// Magenta img:
-			// pixels[index + 0] = img.pixels[index + 0];
-			// pixels[index + 2] = img.pixels[index + 2];
+			function someColorsImg(r, g, b) {
+				if (r) pixels[index + 0] = img.pixels[index + 0];
+				if (g) pixels[index + 1] = img.pixels[index + 1];
+				if (b) pixels[index + 2] = img.pixels[index + 2];
+			}
 
 			// Inverse colors img:
-			// pixels[index + 0] = 255 - img.pixels[index + 0];
-			// pixels[index + 1] = 255 - img.pixels[index + 1];
-			// pixels[index + 2] = 255 - img.pixels[index + 2];
+			function inverseColorsImg() {
+				pixels[index + 0] = 255 - img.pixels[index + 0];
+				pixels[index + 1] = 255 - img.pixels[index + 1];
+				pixels[index + 2] = 255 - img.pixels[index + 2];
+			}
 
 			// Dark inverse colors img:
-			// pixels[index + 0] = 128 - img.pixels[index + 0];
-			// pixels[index + 1] = 128 - img.pixels[index + 1];
-			// pixels[index + 2] = 128 - img.pixels[index + 2];
+			function darkInverseColorsImg() {
+				pixels[index + 0] = 128 - img.pixels[index + 0];
+				pixels[index + 1] = 128 - img.pixels[index + 1];
+				pixels[index + 2] = 128 - img.pixels[index + 2];
+			}
 
 			// Greyscale colors img:
-			// let cols = img.pixels.slice(index, index + 3);
-			// let avg = (cols[0] + cols[1] + cols[2]) / 3;
-			// pixels[index + 0] = avg;
-			// pixels[index + 1] = avg;
-			// pixels[index + 2] = avg;
+			function greyscaleColorsImg() {
+				pixels[index + 0] = avg;
+				pixels[index + 1] = avg;
+				pixels[index + 2] = avg;
+			}
 
 			// Yellow greyscale colors img:
-			// let cols = img.pixels.slice(index, index + 3);
-			// let avg = (cols[0] + cols[1] + cols[2]) / 3;
-			// pixels[index + 0] = avg;
-			// pixels[index + 1] = avg;
-			// pixels[index + 2] = img.pixels[index + 2];
+			function yellowGreyscaleColorsImg() {
+				pixels[index + 0] = avg;
+				pixels[index + 1] = avg;
+				pixels[index + 2] = img.pixels[index + 2];
+			}
+
+			// Greyscale some colors img:
+			function greyscaleSomeColorsImg(r, g, b) {
+				pixels[index + 0] = avg;
+				pixels[index + 1] = avg;
+				pixels[index + 2] = avg;
+
+				if (r) pixels[index + 0] = img.pixels[index + 0];
+				if (g) pixels[index + 1] = img.pixels[index + 1];
+				if (b) pixels[index + 2] = img.pixels[index + 2];
+			}
 
 			// Brighter img:
-			// pixels[index + 0] = img.pixels[index + 0] * 1.5;
-			// pixels[index + 1] = img.pixels[index + 1] * 1.5;
-			// pixels[index + 2] = img.pixels[index + 2] * 1.5;
+			function brighterImg(r, b, g) {
+				if (arguments.length == 1) {
+					// make all colors brighter by same amount
+					b = r;
+					g = r;
+				}
 
-			// Weighted color img
-			// pixels[index + 0] = img.pixels[index + 0] * 1.3;
-			// pixels[index + 1] = img.pixels[index + 1] * 0.85;
-			// pixels[index + 2] = img.pixels[index + 2] * 1.3;
+				if (arguments.length == 0) {
+					// default brightness increase is 1.5
+					r = 1.5;
+					g = 1.5;
+					b = 1.5;
+				}
+
+				pixels[index + 0] = img.pixels[index + 0] * r;
+				pixels[index + 1] = img.pixels[index + 1] * g;
+				pixels[index + 2] = img.pixels[index + 2] * b;
+			}
 
 			// Transparant whitespace img:
-			// let cols = img.pixels.slice(index, index + 3);
-			// let avg = (cols[0] + cols[1] + cols[2]) / 3;
-			// if (avg < 200) { // if it isnt white
-			// 	// if (avg === 255) { // if it isnt white
-			// 	pixels[index + 0] = img.pixels[index + 0];
-			// 	pixels[index + 1] = img.pixels[index + 1];
-			// 	pixels[index + 2] = img.pixels[index + 2];
-			// 	pixels[index + 3] = 255;
-			// } else {
-			// 	pixels[index + 3] = 0; // transparent
-			// }
+			function transparentWhitespaceImg(whiteThreshold) {
+				if (type(whiteThreshold) !== Number) {
+					whiteThreshold = 200;
+				}
+
+				if (avg < whiteThreshold) { // if it isnt white
+					pixels[index + 0] = img.pixels[index + 0];
+					pixels[index + 1] = img.pixels[index + 1];
+					pixels[index + 2] = img.pixels[index + 2];
+					pixels[index + 3] = 255;
+				} else {
+					pixels[index + 3] = 0; // transparent
+				}
+			}
+
+			// TODO: fix this, and create new one that user can input 2 colors
+			// and it replaces one with the other, with a user given threshold
 
 			// Magenta blackness img:
 			// let avg = (cols[0] + (255 - cols[1]) + cols[2]) / 3;
@@ -118,19 +162,23 @@ function drawImg() {
 
 			// Transparant corresponding to brightness img:
 			// AKA: Disco
-			let cols = img.pixels.slice(index, index + 3);
-			let avg = (cols[0] + cols[1] + cols[2]) / 3;
-			pixels[index + 0] = img.pixels[index + 0];
-			pixels[index + 1] = img.pixels[index + 1];
-			pixels[index + 2] = img.pixels[index + 2];
-			pixels[index + 3] = map(brightness(avg), 100, 0, 0, 255);
-			// 255 is vis
+			function mapWhitenessToTransparencyImg() {
+				let cols = img.pixels.slice(index, index + 3);
+				let avg = (cols[0] + cols[1] + cols[2]) / 3;
+				pixels[index + 0] = img.pixels[index + 0];
+				pixels[index + 1] = img.pixels[index + 1];
+				pixels[index + 2] = img.pixels[index + 2];
+				pixels[index + 3] = map(brightness(avg), 100, 0, 0, 255);
+				// 255 is vis
+			}
 
 			// Averaging all pixels:
-			// r += img.pixels[index + 0];
-			// g += img.pixels[index + 1];
-			// b += img.pixels[index + 2];
-			// i++;
+			function averagePixels() {
+				r += img.pixels[index + 0];
+				g += img.pixels[index + 1];
+				b += img.pixels[index + 2];
+				i++;
+			}
 
 
 		}
