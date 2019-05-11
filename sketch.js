@@ -5,8 +5,7 @@ let img;
 // let lines = [];
 
 function preload() {
-	// img = loadImage('kitten.jpg');
-	img = loadImage('energy_mindmap2.png');
+	img = loadImage('kitten.jpg');
 }
 
 function setup() {
