@@ -25,17 +25,22 @@ function preload() {
 
 function setup() {
 	let canvasSize = .66;
-	createCanvas(img.width * canvasSize, img.height * canvasSize);
+	doc.canvas = createCanvas(img.width * canvasSize,
+		img.height * canvasSize);
 	pixelDensity(1);
 
 	background(0);
 
 	img.resize(width, height);
 
-	drawImg('normal');
+	drawImg('normalImg');
+
+	addDropdowns();
 }
 
-function drawImg() {
+function drawImg(mode) {
+	console.log(mode);
+
 	img.loadPixels();
 	// filteredImg.background(0);
 
@@ -56,50 +61,52 @@ function drawImg() {
 			let cols = img.pixels.slice(index, index + 3);
 			let avg = (cols[0] + cols[1] + cols[2]) / 3;
 
+			let functions = {};
+
 			// Normal img:
-			function normalImg() {
+			functions.normalImg = function() {
 				pixels[index + 0] = img.pixels[index + 0];
 				pixels[index + 1] = img.pixels[index + 1];
 				pixels[index + 2] = img.pixels[index + 2];
 			}
 
 			// Magenta img:
-			function someColorsImg(r, g, b) {
+			functions.someColorsImg = function(r, g, b) {
 				if (r) pixels[index + 0] = img.pixels[index + 0];
 				if (g) pixels[index + 1] = img.pixels[index + 1];
 				if (b) pixels[index + 2] = img.pixels[index + 2];
 			}
 
 			// Inverse colors img:
-			function inverseColorsImg() {
+			functions.inverseColorsImg = function() {
 				pixels[index + 0] = 255 - img.pixels[index + 0];
 				pixels[index + 1] = 255 - img.pixels[index + 1];
 				pixels[index + 2] = 255 - img.pixels[index + 2];
 			}
 
 			// Dark inverse colors img:
-			function darkInverseColorsImg() {
+			functions.darkInverseColorsImg = function() {
 				pixels[index + 0] = 128 - img.pixels[index + 0];
 				pixels[index + 1] = 128 - img.pixels[index + 1];
 				pixels[index + 2] = 128 - img.pixels[index + 2];
 			}
 
 			// Greyscale colors img:
-			function greyscaleColorsImg() {
+			functions.greyscaleColorsImg = function() {
 				pixels[index + 0] = avg;
 				pixels[index + 1] = avg;
 				pixels[index + 2] = avg;
 			}
 
 			// Yellow greyscale colors img:
-			function yellowGreyscaleColorsImg() {
+			functions.yellowGreyscaleColorsImg = function() {
 				pixels[index + 0] = avg;
 				pixels[index + 1] = avg;
 				pixels[index + 2] = img.pixels[index + 2];
 			}
 
 			// Greyscale some colors img:
-			function greyscaleSomeColorsImg(r, g, b) {
+			functions.greyscaleSomeColorsImg = function(r, g, b) {
 				pixels[index + 0] = avg;
 				pixels[index + 1] = avg;
 				pixels[index + 2] = avg;
@@ -110,7 +117,7 @@ function drawImg() {
 			}
 
 			// Brighter img:
-			function brighterImg(r, b, g) {
+			functions.brighterImg = function(r, b, g) {
 				if (arguments.length == 1) {
 					// make all colors brighter by same amount
 					b = r;
@@ -130,8 +137,8 @@ function drawImg() {
 			}
 
 			// Transparant whitespace img:
-			function transparentWhitespaceImg(whiteThreshold) {
-				if (type(whiteThreshold) !== Number) {
+			functions.transparentWhitespaceImg = function(whiteThreshold) {
+				if (typeof(whiteThreshold) !== Number) {
 					whiteThreshold = 200;
 				}
 
@@ -162,7 +169,7 @@ function drawImg() {
 
 			// Transparant corresponding to brightness img:
 			// AKA: Disco
-			function mapWhitenessToTransparencyImg() {
+			functions.mapWhitenessToTransparencyImg = function() {
 				let cols = img.pixels.slice(index, index + 3);
 				let avg = (cols[0] + cols[1] + cols[2]) / 3;
 				pixels[index + 0] = img.pixels[index + 0];
@@ -173,12 +180,15 @@ function drawImg() {
 			}
 
 			// Averaging all pixels:
-			function averagePixels() {
+			functions.averagePixels = function() {
 				r += img.pixels[index + 0];
 				g += img.pixels[index + 1];
 				b += img.pixels[index + 2];
 				i++;
 			}
+
+			// functions['normalImg']();
+			functions[mode](arguments[1], arguments[2], arguments[3]);
 
 
 		}
@@ -221,17 +231,5 @@ function draw() {
 	// 		lines.splice(i, 1);
 	// 	};
 	// }
-
-}
-
-function mousePressed() {
-	save('canvas.png');
-
-
-
-
-
-
-
 
 }
