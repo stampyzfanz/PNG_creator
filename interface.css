@@ -1,0 +1,15 @@
+html {
+	height: 100% /*fixes gradient*/
+}
+
+body {
+	background: linear-gradient(to bottom right, red, orange, yellow);
+}
+
+.row {
+	display: flex;
+}
+
+.column {
+	flex: 50%;
+}
