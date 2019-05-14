@@ -224,7 +224,7 @@ function draw() {
 
 	// lines.push(new Line(random(width), random(height), 255));
 
-	// Strobe lights for disco
+	// Strobe lights for disco mode
 	// for (let i in lines) {
 	// 	lines[i].show();
 	// 	if (lines[i].update()) {
