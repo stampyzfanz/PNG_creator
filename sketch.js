@@ -23,28 +23,51 @@ function preload() {
 	img = loadImage('kitten.jpg');
 }
 
+let maxWidth = 1000;
+
 function setup() {
-	let canvasSize = .66;
-	doc.canvas = createCanvas(img.width * canvasSize,
-		img.height * canvasSize);
+	doc.canvas = createCanvas(img.width, img.height);
+
+	// update sizes
+	if (img.width > maxWidth) {
+		let diff = img.width / maxWidth;
+		resizeCanvas(img.width / diff, img.height / diff);
+	} else if (img.height > maxWidth) {
+		let diff = img.height / maxWidth;
+		resizeCanvas(img.width / diff, img.height / diff);
+	} else {
+		resizeCanvas(img.width, img.height);
+	}
 	pixelDensity(1);
-
 	background(0);
-
 	img.resize(width, height);
 
+	// you have to call it twice but im not sure why
+	// trust me
+	drawImg('normalImg');
 	drawImg('normalImg');
 
 	addDropdowns();
 }
 
 function drawImg(mode) {
-	console.log(mode);
+	// update sizes
+	if (img.width > 512) {
+		let diff = img.width / 512;
+		resizeCanvas(img.width / diff, img.height / diff);
+	} else if (img.height > 512) {
+		let diff = img.height / 512;
+		resizeCanvas(img.width / diff, img.height / diff);
+	} else {
+		resizeCanvas(img.width, img.height);
+	}
+	pixelDensity(1);
+	background(0);
+	img.resize(width, height);
+
+	console.log(mode, arguments);
 
 	img.loadPixels();
-	// filteredImg.background(0);
-
-	// filteredImg.loadPixels();
 	loadPixels();
 
 	// Averaging all pixels:

@@ -15,6 +15,29 @@ function addDropdowns() {
 		}
 	}
 
+
+	doc.choosePicture = createFileInput(handleFile);
+	async function handleFile(file) {
+		print(file);
+		if (file.type === 'image') {
+			// creates img elt. doesnt have loadPixels
+			// img_elt = await createImg(file.data);
+			// img_elt.hide();
+
+			console.log(file.data);
+			img = await loadImage(file.data);
+			await img;
+
+			// let fake_canvas = createGraphics(file.width, file.height);
+			// fake_canvas.background(0);
+			// fake_canvas.image(img_elt);
+
+			// img = fake_canvas;
+
+			drawImg('normalImg');
+		}
+	}
+
 	doc.chooseSetting.changed(() => {
 		let word = doc.chooseSetting.value();
 		let functionStr = wordToFunction[word];
@@ -29,6 +52,7 @@ function addDropdowns() {
 	// also see interface.css
 	doc.downloadImg.parent('#settings');
 	doc.chooseSetting.parent('#settings');
+	doc.choosePicture.parent('#settings');
 
 
 
