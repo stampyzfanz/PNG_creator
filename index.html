@@ -17,6 +17,25 @@
 	<!-- <script src="line.js"></script> -->
 
 	<script type="text/javascript">
+		function sleep(ms) {
+			return new Promise(resolve => setTimeout(resolve, ms));
+		}
+
+		function maxNum(a, b) {
+			if (a > b) {
+				return a;
+			} else {
+				return b;
+			}
+		}
+
+		function minNum(a, b) {
+			if (a < b) {
+				return a;
+			} else {
+				return b;
+			}
+		}
 	</script>
 </head>
 <body>

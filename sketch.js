@@ -23,18 +23,15 @@ function preload() {
 	img = loadImage('kitten.jpg');
 }
 
-let maxWidth = 1000;
+let maxWidth = 612;
 
 function setup() {
 	doc.canvas = createCanvas(img.width, img.height);
 
 	// update sizes
-	if (img.width > maxWidth) {
-		let diff = img.width / maxWidth;
-		resizeCanvas(img.width / diff, img.height / diff);
-	} else if (img.height > maxWidth) {
-		let diff = img.height / maxWidth;
-		resizeCanvas(img.width / diff, img.height / diff);
+	if (maxNum(img.width, img.height) > maxWidth) {
+		let diff = maxNum(img.width, img.height) / maxWidth;
+		resizeCanvas(round(img.width / diff), round(img.height / diff));
 	} else {
 		resizeCanvas(img.width, img.height);
 	}
@@ -45,19 +42,15 @@ function setup() {
 	// you have to call it twice but im not sure why
 	// trust me
 	drawImg('normalImg');
-	drawImg('normalImg');
 
 	addDropdowns();
 }
 
 function drawImg(mode) {
 	// update sizes
-	if (img.width > 512) {
-		let diff = img.width / 512;
-		resizeCanvas(img.width / diff, img.height / diff);
-	} else if (img.height > 512) {
-		let diff = img.height / 512;
-		resizeCanvas(img.width / diff, img.height / diff);
+	if (maxNum(img.width, img.height) > maxWidth) {
+		let diff = maxNum(img.width, img.height) / maxWidth;
+		resizeCanvas(round(img.width / diff), round(img.height / diff));
 	} else {
 		resizeCanvas(img.width, img.height);
 	}
@@ -76,6 +69,8 @@ function drawImg(mode) {
 	// 	b = 0,
 	// 	i = 0;
 
+	console.log(width, height);
+	console.log(img.width, img.height);
 	for (let x = 0; x < width; x++) {
 		for (let y = 0; y < height; y++) {
 			let index = (x + y * width) * 4;
@@ -219,9 +214,6 @@ function drawImg(mode) {
 
 
 	updatePixels();
-
-	// filteredImg.pixels = pixels;
-	// filteredImg.updatePixels();
 
 	img.pixels = pixels;
 	img.updatePixels();
