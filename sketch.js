@@ -230,21 +230,21 @@ function drawImg(mode) {
 
 function draw() {
 	// Disco:
-	// selectAll('body')[0].style('background-color', `hsl(${frameCount}, 100%, 80%)`);
+	if (doc.discoMode && doc.discoMode.checked()) {
+		selectAll('body')[0].style('background', `hsl(${frameCount}, 100%, 80%)`);
 
-	// drawImg();
-	// tint(255, 50);
-	// image(filteredImg, 0, 0, width, height);
-	// ellipse(width / 3, random(height), 20);
+		// tint(255, 50);
+		// image(filteredImg, 0, 0, width, height);
+		// ellipse(width / 3, random(height), 20);
 
-	// lines.push(new Line(random(width), random(height), 255));
+		// lines.push(new Line(random(width), random(height), 255));
 
-	// Strobe lights for disco mode
-	// for (let i in lines) {
-	// 	lines[i].show();
-	// 	if (lines[i].update()) {
-	// 		lines.splice(i, 1);
-	// 	};
-	// }
-
+		// Strobe lights for disco mode
+		// for (let i in lines) {
+		// 	lines[i].show();
+		// 	if (lines[i].update()) {
+		// 		lines.splice(i, 1);
+		// 	};
+		// }
+	}
 }
