@@ -40,6 +40,20 @@ function addDropdowns() {
 	});
 
 	doc.discoMode = createCheckbox('disco mode', false);
+	doc.discoMode.changed(discoModeChanged);
+
+	async function discoModeChanged() {
+		if (!doc.discoMode.checked()) {
+			// wait for draw to stop reversing the background change
+			await sleep(1000);
+			// selectAll('body')[0].style('background',
+			// 	'linear - gradient(to bottom right, red, orange, yellow) !important');
+			document.getElementsByTagName('body')[0].style = {
+				'background': 'linear - gradient(to bottom right, red, orange, yellow) !important'
+			}
+		}
+		console.log('reverting bg to normal');
+	}
 
 	// https://stackoverflow.com/questions/2933681/how-to-position-an-element-next-to-another-an-element-of-undefined-position
 	// also see interface.css
