@@ -58,8 +58,6 @@ function drawImg(mode, ...params) {
 	background(0);
 	img.resize(width, height);
 
-	console.log(mode, Array.from(arguments)); // makes arguments an actual arr
-
 	img.loadPixels();
 	loadPixels();
 
@@ -212,7 +210,8 @@ function drawImg(mode, ...params) {
 			}
 
 			// functions['normalImg']();
-			functions[mode](arguments[1], arguments[2], arguments[3]);
+			// TODO: add extra params.
+			functions[mode](params[0], params[1], params[2]);
 
 
 		}
