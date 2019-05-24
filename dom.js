@@ -8,6 +8,8 @@ function addDropdowns() {
 		.mousePressed(() => save('canvas.png'));
 	// save is p5 function to download canvas
 
+	// TODO: make btn to make img smaller
+
 	doc.chooseSetting = createSelect();
 	for (let a in wordToFunction) {
 		if (wordToFunction.hasOwnProperty(a)) {
@@ -32,12 +34,56 @@ function addDropdowns() {
 
 	doc.chooseSetting.changed(() => {
 		let word = doc.chooseSetting.value();
-		let functionStr = wordToFunction[word];
+		let functionStr = wordToFunction[word].split('(')[0];
 		// console.log(word);
 		// console.log(functionStr);
 
+		createSettingArguments();
 		drawImg(functionStr);
 	});
+
+	function execDrawImg() {
+		let word = doc.chooseSetting.value();
+		let functionStr = wordToFunction[word].split('(')[0];
+
+		let args = [];
+		for (let i = 0; i < doc.args.length; i++) {
+			args.push(doc.args[i].value()); // bug? is value correct?
+		}
+
+		drawImg(functionStr, args);
+	}
+
+
+	doc.args = [];
+	doc.argExplanationArr = [];
+
+	function createSettingArguments() {
+		let word = doc.chooseSetting.value();
+		let functionStr = wordToFunction[word];
+		let argsStr = functionStr.split(/\(|\)/)[1];
+		// functionStr.split() gives eg ["someColorsImg", "r, g, b", ""]
+		// [1] is middle elt of array eg "r, g, b"
+		let argsArr = argsStr.split(/, /);
+		// WILL cause bug, as it argsArr can be [""]
+		argsArr = argsArr.filter(arg => arg); // if arg then keep it
+		console.log(argsArr, argsArr.length);
+
+		for (let i = 0; i < argsArr.length; i++) {
+			// all arguments are between 0 and 255
+			doc.args[i] = createSlider(0, 255, 128, 3);
+			doc.args[i].style('display', 'inline-block');
+			doc.args[i].changed(execDrawImg);
+			doc.args[i].parent('#settings');
+
+			doc.argExplanationArr[i] =
+				createP(`This will change the ${argsArr[i]} of the picture.`);
+			doc.argExplanationArr[i].style('display', 'inline-block');
+			doc.argExplanationArr[i].parent('#settings');
+		}
+
+	}
+
 
 	doc.discoMode = createCheckbox('disco mode', false);
 	doc.discoMode.changed(discoModeChanged);

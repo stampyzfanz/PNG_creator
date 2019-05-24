@@ -5,18 +5,18 @@ let img;
 // let lines = [];
 
 let wordToFunction = {
-	"normal image": "normalImg",
-	"image with some of the colors": "someColorsImg",
-	"image with inverted colors": "inverseColorsImg",
-	"image with inverted colors that's darker": "darkInverseColorsImg",
-	"greyscale image": "greyscaleColorsImg",
-	"some greyscale image with green normal": "yellowGreyscaleColorsImg",
-	"some greyscale image with some colors normal": "greyscaleSomeColorsImg",
-	"image with increased brightness (saturation?)": "brighterImg",
-	"image with white being transparent": "transparentWhitespaceImg",
+	"normal image": "normalImg()",
+	"image with some of the colors": "someColorsImg(r, g, b)",
+	"image with inverted colors": "inverseColorsImg()",
+	"image with inverted colors that's darker": "darkInverseColorsImg()",
+	"greyscale image": "greyscaleColorsImg()",
+	"some greyscale image with green normal": "yellowGreyscaleColorsImg()",
+	"some greyscale image with some colors normal": "greyscaleSomeColorsImg(r, g, b)",
+	"image with increased brightness (saturation?)": "brighterImg(r, g, b)",
+	"image with white being transparent": "transparentWhitespaceImg(whiteThreshold)",
 	"image where the brightness of each part of the image \
-	determines its transparency": "mapWhitenessToTransparencyImg",
-	"": "averagePixels",
+	determines its transparency": "mapWhitenessToTransparencyImg()",
+	"": "averagePixels()",
 };
 
 function preload() {
@@ -39,14 +39,14 @@ function setup() {
 	background(0);
 	img.resize(width, height);
 
-	// you have to call it twice but im not sure why
-	// trust me
 	drawImg('normalImg');
 
 	addDropdowns();
 }
 
-function drawImg(mode) {
+function drawImg(mode, ...params) {
+	// all parameters are between 0 and 255 (apart from mode)
+
 	// update sizes
 	if (maxNum(img.width, img.height) > maxWidth) {
 		let diff = maxNum(img.width, img.height) / maxWidth;
@@ -58,7 +58,7 @@ function drawImg(mode) {
 	background(0);
 	img.resize(width, height);
 
-	console.log(mode, arguments);
+	console.log(mode, Array.from(arguments)); // makes arguments an actual arr
 
 	img.loadPixels();
 	loadPixels();
@@ -69,8 +69,11 @@ function drawImg(mode) {
 	// 	b = 0,
 	// 	i = 0;
 
-	console.log(width, height);
-	console.log(img.width, img.height);
+	if (img.width !== width || img.height !== height) {
+		console.log(height, width);
+		console.log(img.height, img.width);
+		console.error('the image isnt same dimensions as canvas');
+	}
 	for (let x = 0; x < width; x++) {
 		for (let y = 0; y < height; y++) {
 			let index = (x + y * width) * 4;
@@ -136,6 +139,9 @@ function drawImg(mode) {
 
 			// Brighter img:
 			functions.brighterImg = function(r, b, g) {
+				r = map(r, 0, 255, -10, 10);
+				g = map(r, 0, 255, -10, 10);
+				b = map(r, 0, 255, -10, 10);
 				if (arguments.length == 1) {
 					// make all colors brighter by same amount
 					b = r;
