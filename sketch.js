@@ -1,5 +1,3 @@
-let counter = 0;
-
 let img;
 
 // Disco:
@@ -213,11 +211,9 @@ function drawImg(mode, ...params) {
 
 			// functions['normalImg']();
 			// TODO: add extra params
-			// console.log(params);
-			try {
-				params = params[0];
+			if (params && params[0]) {
 				functions[mode](params[0], params[1], params[2]);
-			} catch (e) {
+			} else {
 				functions[mode]();
 			}
 
