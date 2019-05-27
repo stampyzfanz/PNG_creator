@@ -51,6 +51,8 @@ function addDropdowns() {
 			args.push(doc.args[i].value()); // bug? is value correct?
 		}
 
+		console.log(args);
+
 		drawImg(functionStr, args);
 	}
 
@@ -81,7 +83,6 @@ function addDropdowns() {
 			doc.argExplanationArr[i].style('display', 'inline-block');
 			doc.argExplanationArr[i].parent('#settings');
 		}
-
 	}
 
 

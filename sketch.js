@@ -1,3 +1,5 @@
+let counter = 0;
+
 let img;
 
 // Disco:
@@ -210,8 +212,14 @@ function drawImg(mode, ...params) {
 			}
 
 			// functions['normalImg']();
-			// TODO: add extra params.
-			functions[mode](params[0], params[1], params[2]);
+			// TODO: add extra params
+			// console.log(params);
+			try {
+				params = params[0];
+				functions[mode](params[0], params[1], params[2]);
+			} catch (e) {
+				functions[mode]();
+			}
 
 
 		}
@@ -223,6 +231,7 @@ function drawImg(mode, ...params) {
 	img.pixels = pixels;
 	img.updatePixels();
 
+	console.log(params);
 
 	// Averaging all pixels:
 	// r /= i;
