@@ -47,6 +47,10 @@ function setup() {
 function drawImg(mode, ...params) {
 	// all parameters are between 0 and 255 (apart from mode)
 
+	if (params && params[0]) {
+		params = params[0];
+	}
+
 	// update sizes
 	if (maxNum(img.width, img.height) > maxWidth) {
 		let diff = maxNum(img.width, img.height) / maxWidth;
@@ -211,7 +215,7 @@ function drawImg(mode, ...params) {
 
 			// functions['normalImg']();
 			// TODO: add extra params
-			if (params && params[0]) {
+			if (params) {
 				functions[mode](params[0], params[1], params[2]);
 			} else {
 				functions[mode]();
@@ -239,6 +243,8 @@ function drawImg(mode, ...params) {
 }
 
 function draw() {
+	// TODO: Add disco
+
 	// Disco:
 	if (doc.discoMode && doc.discoMode.checked()) {
 		selectAll('body')[0].style('background', `hsl(${frameCount}, 100%, 80%)`);
