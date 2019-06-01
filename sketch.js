@@ -1,8 +1,7 @@
 /*
 TODO:
-1. The whiteThreshold doesn't work? Fix argument.
-2. Reimplement line.js in disco mode.
-3. Remove some bad comments, add more good comments
+1. Reimplement line.js in disco mode.
+2. Remove some bad comments, add more good comments
 */
 
 let img;
@@ -154,8 +153,7 @@ function drawImg(mode, ...params) {
 					b = map(b, 0, 255, -10, 10);
 				}
 
-				if (params.length == 1) { // maybe bug, as params length might not be good
-					// make all colors brighter by same amount
+				if (params.length == 1) {
 					b = r;
 					g = r;
 				}
@@ -174,7 +172,7 @@ function drawImg(mode, ...params) {
 
 			// Transparant whitespace img:
 			functions.transparentWhitespaceImg = function(whiteThreshold) {
-				if (typeof(whiteThreshold) !== Number) {
+				if (typeof(whiteThreshold) !== 'number') {
 					whiteThreshold = 200;
 				}
 
