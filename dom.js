@@ -28,6 +28,7 @@ function addDropdowns() {
 
 			await sleep(300);
 
+			deleteAllArguments();
 			drawImg('normalImg');
 		}
 	}
@@ -38,6 +39,7 @@ function addDropdowns() {
 		// console.log(word);
 		// console.log(functionStr);
 
+		deleteAllArguments();
 		createSettingArguments();
 		drawImg(functionStr);
 	});
@@ -48,7 +50,7 @@ function addDropdowns() {
 
 		let args = [];
 		for (let i = 0; i < doc.args.length; i++) {
-			args.push(doc.args[i].value()); // bug? is value correct?
+			args.push(doc.args[i].value());
 		}
 
 		console.log(args);
@@ -83,6 +85,19 @@ function addDropdowns() {
 			doc.argExplanationArr[i].style('display', 'inline-block');
 			doc.argExplanationArr[i].parent('#settings');
 		}
+	}
+
+	function deleteAllArguments() {
+		for (let elt of doc.args) {
+			elt.remove();
+		}
+
+		for (let elt of doc.argExplanationArr) {
+			elt.remove();
+		}
+
+		doc.args = [];
+		doc.argExplanationArr = [];
 	}
 
 

@@ -1,3 +1,12 @@
+/*
+TODO:
+1. Image with some colours is black to start with. Remove this blackness.
+2. Delete dom arguments after the setting has been changed
+3. The whiteThreshold doesn't work? Fix argument.
+4. Reimplement line.js in disco mode.
+5. Remove some bad comments, add more good comments
+*/
+
 let img;
 
 // Disco:
@@ -140,17 +149,20 @@ function drawImg(mode, ...params) {
 			}
 
 			// Brighter img:
-			functions.brighterImg = function(r, b, g) {
-				r = map(r, 0, 255, -10, 10);
-				g = map(r, 0, 255, -10, 10);
-				b = map(r, 0, 255, -10, 10);
-				if (arguments.length == 1) {
+			functions.brighterImg = function(r, g, b) {
+				if (params.length == 3) {
+					r = map(r, 0, 255, -10, 10);
+					g = map(g, 0, 255, -10, 10);
+					b = map(b, 0, 255, -10, 10);
+				}
+
+				if (params.length == 1) { // maybe bug, as params length might not be good
 					// make all colors brighter by same amount
 					b = r;
 					g = r;
 				}
 
-				if (arguments.length == 0) {
+				if (params.length == 0) {
 					// default brightness increase is 1.5
 					r = 1.5;
 					g = 1.5;
