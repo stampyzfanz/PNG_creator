@@ -4,6 +4,7 @@ TODO:
 2. Remove some bad comments, add more good comments
 3. Add to README
 4. Add drag and drop option to add picture
+5. Allow user to change width
 */
 
 let img;
@@ -48,6 +49,8 @@ function setup() {
 	background(0);
 	img.resize(width, height);
 
+	disco.filteredImg = createImage(width, height);
+
 	drawImg('normalImg');
 
 	addDropdowns();
@@ -73,6 +76,8 @@ function drawImg(mode, ...params) {
 
 	img.loadPixels();
 	loadPixels();
+	disco.filteredImg.loadPixels();
+
 
 	// Averaging all pixels:
 	// let r = 0,
@@ -250,7 +255,8 @@ function drawImg(mode, ...params) {
 	// b /= i;
 	// background(r, g, b);
 
-	disco.filteredImg =
+	disco.filteredImg.pixels = pixels;
+	disco.filteredImg.updatePixels();
 
 }
 
