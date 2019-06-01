@@ -41,7 +41,7 @@ function addDropdowns() {
 
 		deleteAllArguments();
 		createSettingArguments();
-		drawImg(functionStr);
+		execDrawImg();
 	});
 
 	function execDrawImg() {

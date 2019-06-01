@@ -1,10 +1,8 @@
 /*
 TODO:
-1. Image with some colours is black to start with. Remove this blackness.
-2. Delete dom arguments after the setting has been changed
-3. The whiteThreshold doesn't work? Fix argument.
-4. Reimplement line.js in disco mode.
-5. Remove some bad comments, add more good comments
+1. The whiteThreshold doesn't work? Fix argument.
+2. Reimplement line.js in disco mode.
+3. Remove some bad comments, add more good comments
 */
 
 let img;
