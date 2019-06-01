@@ -2,13 +2,16 @@
 TODO:
 1. Reimplement line.js in disco mode.
 2. Remove some bad comments, add more good comments
+3. Add to README
+4. Add drag and drop option to add picture
 */
 
 let img;
 
-// Disco:
-// let filteredImg;
-// let lines = [];
+let disco = {
+	"disco.lines": [],
+	"filteredImg": ""
+};
 
 let wordToFunction = {
 	"normal image": "normalImg()",
@@ -247,6 +250,7 @@ function drawImg(mode, ...params) {
 	// b /= i;
 	// background(r, g, b);
 
+	disco.filteredImg =
 
 }
 
@@ -257,18 +261,18 @@ function draw() {
 	if (doc.discoMode && doc.discoMode.checked()) {
 		selectAll('body')[0].style('background', `hsl(${frameCount}, 100%, 80%)`);
 
-		// tint(255, 50);
-		// image(filteredImg, 0, 0, width, height);
-		// ellipse(width / 3, random(height), 20);
+		tint(255, 50);
+		image(disco.filteredImg, 0, 0, width, height);
+		ellipse(width / 3, random(height), 20);
 
-		// lines.push(new Line(random(width), random(height), 255));
+		disco.lines.push(new Line(random(width), random(height), 255));
 
-		// Strobe lights for disco mode
-		// for (let i in lines) {
-		// 	lines[i].show();
-		// 	if (lines[i].update()) {
-		// 		lines.splice(i, 1);
-		// 	};
-		// }
+		// Strobe lights
+		for (let i in disco.lines) {
+			disco.lines[i].show();
+			if (disco.lines[i].update()) {
+				disco.lines.splice(i, 1);
+			};
+		}
 	}
 }
