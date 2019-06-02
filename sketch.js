@@ -2,12 +2,15 @@
 TODO:
 1. Remove some bad comments, add more good comments
 2. Add to README
-3. Add drag and drop option to add picture
+3. Add information drag and drop option to add picture
 4. Allow user to change width
+5. Allow user to add functions
+6. Allow functions to do code at the start and end of drawImg
 */
 
 let img;
 
+// names of functions shown to users, compared to their actual name
 let wordToFunction = {
 	"normal image": "normalImg()",
 	"image with some of the colors": "someColorsImg(r, g, b)",
@@ -55,7 +58,7 @@ function drawImg(mode, ...params) {
 		params = params[0];
 	}
 
-	// update sizes
+	// update sizes of canvas and img
 	if (maxNum(img.width, img.height) > maxWidth) {
 		let diff = maxNum(img.width, img.height) / maxWidth;
 		resizeCanvas(round(img.width / diff), round(img.height / diff));
@@ -69,17 +72,21 @@ function drawImg(mode, ...params) {
 	img.loadPixels();
 	loadPixels();
 
+	// TODO: let functions do code at start and end of drawImg
 	// Averaging all pixels:
 	// let r = 0,
 	// 	g = 0,
 	// 	b = 0,
 	// 	i = 0;
 
+	// if canvas and pic arent same size, give error
 	if (img.width !== width || img.height !== height) {
 		console.log(height, width);
 		console.log(img.height, img.width);
 		console.error('the image isnt same dimensions as canvas');
 	}
+
+	// apply function to every pixel of img
 	for (let x = 0; x < width; x++) {
 		for (let y = 0; y < height; y++) {
 			let index = (x + y * width) * 4;
@@ -90,49 +97,42 @@ function drawImg(mode, ...params) {
 
 			let functions = {};
 
-			// Normal img:
 			functions.normalImg = function() {
 				pixels[index + 0] = img.pixels[index + 0];
 				pixels[index + 1] = img.pixels[index + 1];
 				pixels[index + 2] = img.pixels[index + 2];
 			}
 
-			// Magenta img:
 			functions.someColorsImg = function(r, g, b) {
 				if (r) pixels[index + 0] = img.pixels[index + 0];
 				if (g) pixels[index + 1] = img.pixels[index + 1];
 				if (b) pixels[index + 2] = img.pixels[index + 2];
 			}
 
-			// Inverse colors img:
 			functions.inverseColorsImg = function() {
 				pixels[index + 0] = 255 - img.pixels[index + 0];
 				pixels[index + 1] = 255 - img.pixels[index + 1];
 				pixels[index + 2] = 255 - img.pixels[index + 2];
 			}
 
-			// Dark inverse colors img:
 			functions.darkInverseColorsImg = function() {
 				pixels[index + 0] = 128 - img.pixels[index + 0];
 				pixels[index + 1] = 128 - img.pixels[index + 1];
 				pixels[index + 2] = 128 - img.pixels[index + 2];
 			}
 
-			// Greyscale colors img:
 			functions.greyscaleColorsImg = function() {
 				pixels[index + 0] = avg;
 				pixels[index + 1] = avg;
 				pixels[index + 2] = avg;
 			}
 
-			// Yellow greyscale colors img:
 			functions.yellowGreyscaleColorsImg = function() {
 				pixels[index + 0] = avg;
 				pixels[index + 1] = avg;
 				pixels[index + 2] = img.pixels[index + 2];
 			}
 
-			// Greyscale some colors img:
 			functions.greyscaleSomeColorsImg = function(r, g, b) {
 				pixels[index + 0] = avg;
 				pixels[index + 1] = avg;
@@ -143,7 +143,6 @@ function drawImg(mode, ...params) {
 				if (b) pixels[index + 2] = img.pixels[index + 2];
 			}
 
-			// Brighter img:
 			functions.brighterImg = function(r, g, b) {
 				if (params.length == 3) {
 					r = map(r, 0, 255, -10, 10);
@@ -168,7 +167,6 @@ function drawImg(mode, ...params) {
 				pixels[index + 2] = img.pixels[index + 2] * b;
 			}
 
-			// Transparant whitespace img:
 			functions.transparentWhitespaceImg = function(whiteThreshold) {
 				if (typeof(whiteThreshold) !== 'number') {
 					whiteThreshold = 200;
@@ -199,8 +197,7 @@ function drawImg(mode, ...params) {
 			// 	pixels[index + 1] = 255 - img.pixels[index + 1]; // magenta
 			// }
 
-			// Transparant corresponding to brightness img:
-			// AKA: Disco
+			// AKA: Disco mode
 			functions.mapWhitenessToTransparencyImg = function() {
 				let cols = img.pixels.slice(index, index + 3);
 				let avg = (cols[0] + cols[1] + cols[2]) / 3;
@@ -211,7 +208,6 @@ function drawImg(mode, ...params) {
 				// 255 is vis
 			}
 
-			// Averaging all pixels:
 			functions.averagePixels = function() {
 				r += img.pixels[index + 0];
 				g += img.pixels[index + 1];
@@ -220,9 +216,8 @@ function drawImg(mode, ...params) {
 			}
 
 			// functions['normalImg']();
-			// TODO: add extra params
 			if (params) {
-				functions[mode](params[0], params[1], params[2]);
+				functions[mode](params[0], params[1], params[2], params[3]);
 			} else {
 				functions[mode]();
 			}
@@ -239,6 +234,7 @@ function drawImg(mode, ...params) {
 
 	console.log(params);
 
+	// TODO: let functions do code at end and start of drawImg
 	// Averaging all pixels:
 	// r /= i;
 	// g /= i;
@@ -247,14 +243,14 @@ function drawImg(mode, ...params) {
 
 }
 
+// draw loops every frame
 function draw() {
-	// TODO: Add disco
-
-	// Disco:
+	// if disco mode is on
 	if (doc.discoMode && doc.discoMode.checked()) {
+		// Change bg color
 		selectAll('body')[0].style('background', `hsl(${frameCount}, 100%, 80%)`);
 
-		// // Strobe lights
+		// Add strobe lights
 		stroke(random(255), random(255), random(255), 100);
 		strokeWeight(4);
 		line(width / 2, 0, random(width), random(height));
