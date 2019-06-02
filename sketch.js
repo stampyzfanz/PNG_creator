@@ -1,11 +1,9 @@
 /*
 TODO:
-1. Remove some bad comments, add more good comments
-2. Add to README
-3. Add information drag and drop option to add picture
-4. Allow user to change width
-5. Allow user to add functions
-6. Allow functions to do code at the start and end of drawImg
+1. Add information drag and drop option to add picture
+2. Allow user to change width
+3. Allow user to add functions
+4. Allow functions to do code at the start and end of drawImg
 */
 
 let img;
@@ -251,8 +249,11 @@ function draw() {
 		selectAll('body')[0].style('background', `hsl(${frameCount}, 100%, 80%)`);
 
 		// Add strobe lights
-		stroke(random(255), random(255), random(255), 100);
-		strokeWeight(4);
-		line(width / 2, 0, random(width), random(height));
+		// Every 10 frames, one gets added
+		if (frameCount % 10 == 0) {
+			stroke(random(255), random(255), random(255), 100);
+			strokeWeight(4);
+			line(width / 2, 0, random(width), random(height));
+		}
 	}
 }
