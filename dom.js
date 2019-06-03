@@ -118,12 +118,21 @@ function addDropdowns() {
 		}
 	}
 
+	doc.imgSize = createInput('Size of image')
+		.changed(() => {
+			if (typeof(parseInt(doc.imgSize.value())) == 'number') {
+				maxWidth = parseInt(doc.imgSize.value());
+				execDrawImg();
+			}
+		});
+
 	// https://stackoverflow.com/questions/2933681/how-to-position-an-element-next-to-another-an-element-of-undefined-position
 	// also see interface.css
 	doc.downloadImg.parent('#settings');
 	doc.chooseSetting.parent('#settings');
 	doc.choosePicture.parent('#settings');
 	doc.discoMode.parent('#settings');
+	doc.imgSize.parent('#settings');
 
 
 

@@ -1,12 +1,13 @@
 /*
 TODO:
-1. Add information drag and drop option to add picture
+1. Add drag and drop option to add picture
 2. Allow user to change width
 3. Allow user to add functions
 4. Allow functions to do code at the start and end of drawImg
 */
 
 let img;
+let originalImg;
 
 // names of functions shown to users, compared to their actual name
 let wordToFunction = {
@@ -25,44 +26,29 @@ let wordToFunction = {
 };
 
 function preload() {
-	img = loadImage('kitten.jpg');
+	originalImg = loadImage('kitten.jpg');
 }
 
 let maxWidth = 612;
 
 function setup() {
+	img = originalImg.get();
 	doc.canvas = createCanvas(img.width, img.height);
-
-	// update sizes
-	if (maxNum(img.width, img.height) > maxWidth) {
-		let diff = maxNum(img.width, img.height) / maxWidth;
-		resizeCanvas(round(img.width / diff), round(img.height / diff));
-	} else {
-		resizeCanvas(img.width, img.height);
-	}
-	pixelDensity(1);
-	background(0);
-	img.resize(width, height);
-
 	drawImg('normalImg');
-
 	addDropdowns();
 }
 
 function drawImg(mode, ...params) {
 	// all parameters are between 0 and 255 (apart from mode)
+	img = originalImg.get();
 
 	if (params && params[0]) {
 		params = params[0];
 	}
 
 	// update sizes of canvas and img
-	if (maxNum(img.width, img.height) > maxWidth) {
-		let diff = maxNum(img.width, img.height) / maxWidth;
-		resizeCanvas(round(img.width / diff), round(img.height / diff));
-	} else {
-		resizeCanvas(img.width, img.height);
-	}
+	let diff = maxNum(img.width, img.height) / maxWidth;
+	resizeCanvas(round(img.width / diff), round(img.height / diff));
 	pixelDensity(1);
 	background(0);
 	img.resize(width, height);
