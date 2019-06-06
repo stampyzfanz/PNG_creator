@@ -23,8 +23,8 @@ function addDropdowns() {
 		print(file);
 		if (file.type === 'image') {
 			await console.log(file.data);
-			img = await loadImage(file.data);
-			await img;
+			originalImg = await loadImage(file.data);
+			await originalImg;
 
 			await sleep(300);
 

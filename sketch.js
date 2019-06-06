@@ -1,9 +1,7 @@
 /*
 TODO:
 1. Add drag and drop option to add picture
-2. Allow user to change width
-3. Allow user to add functions
-4. Allow functions to do code at the start and end of drawImg
+2. Allow user to add functions
 */
 
 let img;
@@ -22,7 +20,7 @@ let wordToFunction = {
 	"image with white being transparent": "transparentWhitespaceImg(whiteThreshold)",
 	"image where the brightness of each part of the image \
 	determines its transparency": "mapWhitenessToTransparencyImg()",
-	"": "averagePixels()",
+	"find the average of all the pixels": "averagePixels()",
 };
 
 function preload() {
@@ -56,12 +54,27 @@ function drawImg(mode, ...params) {
 	img.loadPixels();
 	loadPixels();
 
+	// for any functions that need to use memory for any reason
+	let memory = {};
+
 	// TODO: let functions do code at start and end of drawImg
-	// Averaging all pixels:
-	// let r = 0,
-	// 	g = 0,
-	// 	b = 0,
-	// 	i = 0;
+	let startFunctions = {}; // will get deleted
+	startFunctions.averagePixels = function() {
+		memory.r = 0;
+		memory.g = 0;
+		memory.b = 0;
+		memory.i = 0;
+	}
+
+	// startFunctions['averagePixels']();
+	if (startFunctions[mode]) {
+		if (params) {
+			startFunctions[mode](params[0], params[1], params[2], params[3]);
+		} else {
+			startFunctions[mode]();
+		}
+	}
+	startFunctions = null;
 
 	// if canvas and pic arent same size, give error
 	if (img.width !== width || img.height !== height) {
@@ -193,10 +206,10 @@ function drawImg(mode, ...params) {
 			}
 
 			functions.averagePixels = function() {
-				r += img.pixels[index + 0];
-				g += img.pixels[index + 1];
-				b += img.pixels[index + 2];
-				i++;
+				memory.r += img.pixels[index + 0];
+				memory.g += img.pixels[index + 1];
+				memory.b += img.pixels[index + 2];
+				memory.i++;
 			}
 
 			// functions['normalImg']();
@@ -218,13 +231,24 @@ function drawImg(mode, ...params) {
 
 	console.log(params);
 
-	// TODO: let functions do code at end and start of drawImg
-	// Averaging all pixels:
-	// r /= i;
-	// g /= i;
-	// b /= i;
-	// background(r, g, b);
+	// TODO: let functions do code at start and end of drawImg
+	let endFunctions = {};
+	endFunctions.averagePixels = function() {
+		memory.r /= memory.i;
+		memory.g /= memory.i;
+		memory.b /= memory.i;
+		background(memory.r, memory.g, memory.b);
+		console.log(memory.r, memory.g, memory.b);
+	}
 
+	// endFunctions['averagePixels']();
+	if (endFunctions[mode]) {
+		if (params) {
+			endFunctions[mode](params[0], params[1], params[2], params[3]);
+		} else {
+			endFunctions[mode]();
+		}
+	}
 }
 
 // draw loops every frame
