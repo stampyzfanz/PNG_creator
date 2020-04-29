@@ -27,6 +27,7 @@ let wordToFunction = {
 	"image where the brightness of each part of the image \
 	determines its transparency": "mapWhitenessToTransparencyImg()",
 	"find the average of all the pixels": "averagePixels()",
+	"find lines in image": "findLines()",
 };
 
 function preload() {
@@ -216,6 +217,36 @@ function drawImg(mode, ...params) {
 				memory.g += img.pixels[index + 1];
 				memory.b += img.pixels[index + 2];
 				memory.i++;
+			}
+
+			functions.findLines = function() {
+				// white for lines
+				// sum of top and bottom
+				let r = 0,
+					g = 0,
+					b = 0;
+
+				// if (pixels[top_neighbour] !== pixels[index]) {
+				// 	debugger;
+				// }
+
+				if (y !== 0) {
+					let top_neighbour = (x + (y - 1) * width) * 4;
+					r += abs(img.pixels[top_neighbour + 0] - img.pixels[index + 0]);
+					g += abs(img.pixels[top_neighbour + 1] - img.pixels[index + 1]);
+					b += abs(img.pixels[top_neighbour + 2] - img.pixels[index + 2]);
+				}
+
+				if (x !== width) {
+					let right_neighbour = (x + 1 + y * width) * 4;
+					r += abs(img.pixels[right_neighbour + 0] - img.pixels[index + 0]);
+					g += abs(img.pixels[right_neighbour + 1] - img.pixels[index + 1]);
+					b += abs(img.pixels[right_neighbour + 2] - img.pixels[index + 2]);
+				}
+
+				pixels[index + 0] = r;
+				pixels[index + 1] = g;
+				pixels[index + 2] = b;
 			}
 
 			// functions['normalImg']();
