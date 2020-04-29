@@ -2,6 +2,12 @@
 TODO:
 1. Add drag and drop option to add picture
 2. Allow user to add functions
+3. Apply function to circle of img
+4. Load transparent pics
+5. Checkbox to either apply new style to img or originalimg - \
+	Gives users ability to chain commands - eg greyscale img
+	then remove transparent whitespace
+6. Chromakey the white threshold
 */
 
 let img;
@@ -229,7 +235,7 @@ function drawImg(mode, ...params) {
 	img.pixels = pixels;
 	img.updatePixels();
 
-	console.log(params);
+	// console.log(params);
 
 	// TODO: let functions do code at start and end of drawImg
 	let endFunctions = {};

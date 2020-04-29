@@ -1,5 +1,5 @@
 function testDrawImgSpeed() {
-	const iterations = 3
+	const iterations = 3;
 	let avg = [];
 
 	for (let i = 0; i < iterations; i++) {

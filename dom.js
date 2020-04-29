@@ -53,7 +53,7 @@ function addDropdowns() {
 			args.push(doc.args[i].value());
 		}
 
-		console.log(args);
+		// console.log(args);
 
 		drawImg(functionStr, args);
 	}
